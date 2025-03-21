@@ -16,11 +16,19 @@ describe("App component", () => {
 		expect(screen.getByText("React Testing Library")).toBeInTheDocument();
 	});
 
-	test("this empty test will pass", () => {
-		// empty test - will pass
-	});
-	test("this empty test will pass too", () => {
-		const sum = 1 + 1;
-		expect(sum).toBe(2);
+	// test("this empty test will pass", () => {
+	// 	// empty test - will pass
+	// });
+	// test("this empty test will pass too", () => {
+	// 	const sum = 1 + 1;
+	// 	expect(sum).toBe(2);
+	// });
+	test("should render paragraph", () => {
+		render(<App />);
+		expect(
+			screen.getByText(
+				"React Testing Library and Vitest work together to provide a robust testing environment.",
+			),
+		).toBeInTheDocument();
 	});
 });
