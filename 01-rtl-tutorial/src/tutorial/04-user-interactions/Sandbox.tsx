@@ -34,6 +34,7 @@ const Sandbox = () => {
 				<button
 					onClick={handleToggleLike}
 					className="block mx-auto text-2xl text-red-500 mt-16"
+					aria-label="like button"
 				>
 					<FaHeart />
 				</button>
@@ -41,6 +42,7 @@ const Sandbox = () => {
 				<button
 					onClick={handleToggleLike}
 					className="block mx-auto text-2xl text-red-500 mt-16"
+					aria-label="unlike button"
 				>
 					<FaRegHeart />
 				</button>
