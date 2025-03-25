@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import validator from "validator";
 const labelStyles = "block text-grey-700 font-medium mb-2";
 const inputStyles = "w-full px-3 py-2 border border-grey-300 rounded-md";
@@ -12,14 +12,16 @@ const Sandbox = () => {
 	});
 	const [error, setError] = useState("");
 
+	// useEffect(() => {
+	// 	console.log(signupInput);
+	// }, [signupInput]);
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { id, value } = e.target;
-		setSignupInput((prev) => {
-			const newState = { ...prev, [id]: value };
-			console.log(newState);
-			return newState;
-		});
-		console.log(signupInput);
+		setSignupInput((prev) => ({
+			...prev,
+			[id]: value,
+		}));
 	};
 	const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
 		e.preventDefault();
