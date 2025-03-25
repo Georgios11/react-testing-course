@@ -17,8 +17,29 @@ describe("05-form-testing", () => {
 
 		const passwordInputElement = screen.getByLabelText("Password");
 		expect(passwordInputElement).toHaveValue("");
+
 		const confirmPasswordInputElement =
 			screen.getByLabelText(/confirm password/i);
 		expect(confirmPasswordInputElement).toHaveValue("");
+	});
+
+	test("should be able to type in the input fields", async () => {
+		const user = userEvent.setup();
+		render(<Sandbox />);
+
+		const emailInputElement = screen.getByRole("textbox", {
+			name: /email/i,
+		});
+		await user.type(emailInputElement, "test@test.com");
+		expect(emailInputElement).toHaveValue("test@test.com");
+
+		const passwordInputElement = screen.getByLabelText("Password");
+		await user.type(passwordInputElement, "secret");
+		expect(passwordInputElement).toHaveValue("secret");
+
+		const confirmPasswordInputElement =
+			screen.getByLabelText(/confirm password/i);
+		await user.type(confirmPasswordInputElement, "secret");
+		expect(confirmPasswordInputElement).toHaveValue("secret");
 	});
 });
