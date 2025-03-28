@@ -8,7 +8,6 @@ const List = ({
 	items: Item[];
 	onDelete: (id: string) => void;
 }) => {
-	console.log(items, onDelete);
 	return (
 		<section className="mt-8">
 			<h2 className="text-xl font-semibold mb-2">Flow Board</h2>
