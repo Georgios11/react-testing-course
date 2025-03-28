@@ -8,6 +8,15 @@ const Form = ({ onSubmit }: { onSubmit: (item: ItemWithoutID) => void }) => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if (!title || !description || !category) return;
+		onSubmit({
+			title,
+			description,
+			category,
+		});
+		setTitle("");
+		setDescription("");
+		setCategory("");
 	};
 
 	const labelStyles = "text-sm font-medium leading-none block mb-2";

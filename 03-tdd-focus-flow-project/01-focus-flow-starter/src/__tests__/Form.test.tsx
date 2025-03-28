@@ -27,4 +27,37 @@ describe("Form Component", () => {
 
 		expect(titleInput).toHaveValue("");
 	});
+
+	test("submit form with entered values", async () => {
+		const { titleInput, descriptionInput, categorySelect, submitButton } =
+			getFormElements();
+		await user.type(titleInput, "New Task");
+		await user.type(descriptionInput, "New Task");
+		await user.selectOptions(categorySelect, "urgent");
+		await user.click(submitButton);
+
+		expect(mockOnSubmit).toHaveBeenCalledWith({
+			title: "New Task",
+			description: "New Task",
+			category: "urgent",
+		});
+	});
+	test("validates required fields", async () => {
+		const { submitButton } = getFormElements();
+		await user.click(submitButton);
+		expect(mockOnSubmit).not.toHaveBeenCalled();
+	});
+
+	test("clears form after submission", async () => {
+		const { titleInput, descriptionInput, categorySelect, submitButton } =
+			getFormElements();
+		await user.type(titleInput, "New Task");
+		await user.type(descriptionInput, "New Task");
+		await user.selectOptions(categorySelect, "urgent");
+		await user.click(submitButton);
+
+		expect(titleInput).toHaveValue("");
+		expect(descriptionInput).toHaveValue("");
+		expect(categorySelect).toHaveValue("");
+	});
 });
