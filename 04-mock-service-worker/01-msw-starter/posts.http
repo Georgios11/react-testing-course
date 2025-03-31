@@ -1,2 +1,27 @@
 ### Get all posts
 GET http://localhost:4000/posts
+
+### Get single post
+GET http://localhost:4000/posts/1
+
+### Create post
+POST http://localhost:4000/posts
+content-type:application/json
+
+{
+    "title":"new post title",
+    "likes":0
+}
+
+
+### Update post
+PUT http://localhost:4000/posts/1
+Content-Type: application/json
+
+{
+    "title":"updated post title",
+    "likes":666
+
+}
+### Delete post
+DELETE http://localhost:4000/posts/1
