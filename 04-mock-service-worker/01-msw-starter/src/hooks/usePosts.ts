@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import axios from "axios";
 
 export type Post = {
@@ -14,7 +14,7 @@ export const usePosts = () => {
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [error, setError] = useState<string>("");
 
-	const fetchPosts = async (): Promise<void> => {
+	const fetchPosts = useCallback(async (): Promise<void> => {
 		try {
 			const { data } = await axios.get<Post[]>(API_URL);
 			setPosts(data);
@@ -22,46 +22,56 @@ export const usePosts = () => {
 		} catch (error) {
 			setError("Failed to fetch posts");
 		}
-	};
-	const handleCreatePost = async (postData: PostWithoutId): Promise<void> => {
-		try {
-			await axios.post(API_URL, {
-				...postData,
-			});
-			await fetchPosts();
-			setError("");
-		} catch (error) {
-			setError("Failed to create post");
-		}
-	};
+	}, []);
 
-	const handleLike = async (postId: string): Promise<void> => {
-		try {
-			const post = posts.find((p) => p.id === postId);
-			if (!post) {
-				setError("Post not found");
-				return;
+	const handleCreatePost = useCallback(
+		async (postData: PostWithoutId): Promise<void> => {
+			try {
+				await axios.post(API_URL, {
+					...postData,
+				});
+				await fetchPosts();
+				setError("");
+			} catch (error) {
+				setError("Failed to create post");
 			}
-			await axios.put(`{API_URL}/${postId}`, {
-				...post,
-				likes: post.likes + 1,
-			});
-			await fetchPosts();
-			setError("");
-		} catch (error) {
-			setError("Failed to like post");
-		}
-	};
+		},
+		[fetchPosts],
+	);
 
-	const handleDelete = async (postId: string): Promise<void> => {
-		try {
-			await axios.delete(`${API_URL}/${postId}`);
-			await fetchPosts();
-			setError("");
-		} catch (error) {
-			setError("Failed to delete post");
-		}
-	};
+	const handleLike = useCallback(
+		async (postId: string): Promise<void> => {
+			try {
+				const post = posts.find((p) => p.id === postId);
+				if (!post) {
+					setError("Post not found");
+					return;
+				}
+				await axios.put(`${API_URL}/${postId}`, {
+					...post,
+					likes: post.likes + 1,
+				});
+				await fetchPosts();
+				setError("");
+			} catch (error) {
+				setError("Failed to like post");
+			}
+		},
+		[posts, fetchPosts],
+	);
+
+	const handleDelete = useCallback(
+		async (postId: string): Promise<void> => {
+			try {
+				await axios.delete(`${API_URL}/${postId}`);
+				await fetchPosts();
+				setError("");
+			} catch (error) {
+				setError("Failed to delete post");
+			}
+		},
+		[fetchPosts],
+	);
 
 	return {
 		posts,
